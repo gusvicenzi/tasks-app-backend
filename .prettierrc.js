@@ -3,7 +3,7 @@ module.exports = {
   bracketSameLine: true,
   bracketSpacing: true,
   singleQuote: true,
-  trailingComma: 'es5',
+  trailingComma: 'avoid',
   semi: false,
   printWidth: 80,
   parser: 'flow',
