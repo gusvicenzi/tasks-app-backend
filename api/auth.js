@@ -9,7 +9,7 @@ module.exports = app => {
     }
 
     const user = await app.db('users')
-      .where({email: req.body.email})
+      .whereRaw("LOWER(email) = LOWER(?)", req.body.email)
       .first()  // Get the fist user with that email(even if the email is a unique key)
 
     if (user) {
