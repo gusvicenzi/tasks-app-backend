@@ -63,5 +63,31 @@ module.exports = app => {
       .catch(err => res.status(400).json(err))
   }
 
-  return { getTasks, save, remove, toggleTask }
+  const updateTaskDb = (req, res, newTask) => {
+    app.db('tasks')
+      .where({ id: req.params.id, userId: req.user.id })
+      .update(newTask)
+      .then(_ => res.status(204).send('Tarefa editada com sucesso'))
+      .catch(err => res.status(400).json(err))
+  }
+
+  const updateTask = (req, res) => {
+    app.db('tasks')
+      .where({ id: req.params.id, userId: req.user.id })
+      .first()
+      .then( task => {
+        if (!task) {
+          const msg = `Task com id ${req.params.id} não encontrada.`
+          return res.status(400).send(msg)
+        }
+        const newTask = {
+          desc: req.body.desc,
+          estimateAt: req.body.estimateAt
+        }
+        updateTaskDb(req, res, newTask)
+      })
+      .catch(err => res.status(400).json(err))
+  }
+
+  return { getTasks, save, remove, toggleTask, updateTask }
 }
